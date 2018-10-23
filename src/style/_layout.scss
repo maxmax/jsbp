@@ -1,0 +1,34 @@
+// Layout global
+.view,
+.view-module {
+  margin-bottom: 60px;
+}
+
+.container-widgets {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: stretch;
+  margin: 25px auto;
+
+  > .fl-col {
+    flex: 33%;
+    box-sizing: border-box;
+  }
+
+  > .fl-col-2 {
+    flex: 25%;
+    box-sizing: border-box;
+  }
+
+  &::after {
+    content: "";
+    clear: both;
+    float: none;
+    display: block;
+  }
+  @media (max-width: $media-tablets) {
+    display: block;
+  }
+}

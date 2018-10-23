@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link href="main.css" rel="stylesheet">
+  </head>
+  <body>
+    <%=require('../components/navigation/ui.html')%>
+    <section class="container">
+      <h3>Dropdown</h3>
+      <%=require('../components/dropdown/ui.html')%>
+      <h3>Slideshow</h3>
+      <%=require('../components/slideshow/ui.html')%>
+      <br />
+      <%=require('../components/slideshow/ui.html')%>
+      <h3>Main by id</h3>
+      <div id="main"></div>
+      <br />
+      <br />
+    </section>
+    <script type="text/javascript" src="main.bundle.js"></script>
+    <script>
+      console.log('window Mount Index.html', window);
+    </script>
+  </body>
+</html>
