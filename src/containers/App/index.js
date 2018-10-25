@@ -20,6 +20,9 @@ export class App {
   render() {
     const {appWrapper, news, counter, asyncapp} = this.state;
 
+    // AsyncApp
+    appendElement(asyncapp.render(), appWrapper);
+    
     // News
     // console.log('App - News', news.render());
     appendElement(news.render(), appWrapper);
@@ -27,9 +30,6 @@ export class App {
 
     // Counter
     appendElement(counter.render(), appWrapper);
-
-    // AsyncApp
-    appendElement(asyncapp.render(), appWrapper);
 
   }
 

@@ -35,7 +35,6 @@ function fetchPosts(subreddit) {
 
 function shouldFetchPosts(state, subreddit) {
   const posts = state.postsBySubreddit[subreddit]
-  console.log('Bump3!');
   if (!posts) {
     return true
   } else if (posts.isFetching) {
@@ -45,28 +44,11 @@ function shouldFetchPosts(state, subreddit) {
   }
 }
 
-// dev
-
 export function fetchPostsIfNeeded(subreddit, store) {
-  //console.log('BUMP fetchPostsIfNeeded!', subreddit);
-  //console.log('BUMP fetchPostsIfNeeded!', store);
-
   const {dispatch, getState} = store;
-
   return (dispatch, getState) => {
     if (shouldFetchPosts(getState(), subreddit)) {
-      // console.log('fetchPostsIfNeeded 2!', dispatch);
       return dispatch(fetchPosts(subreddit))
     }
   }
 }
-
-//export function fetchPostsIfNeeded(subreddit, dispatch, getState) {
-//  console.log('fetchPostsIfNeeded!');
-//  return (dispatch, getState) => {
-//    if (shouldFetchPosts(getState(), subreddit)) {
-//      console.log('fetchPostsIfNeeded 2!', dispatch);
-//      return dispatch(fetchPosts(subreddit))
-//    }
-//  }
-//}

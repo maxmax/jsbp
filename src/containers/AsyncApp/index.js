@@ -9,11 +9,11 @@ import {
 
 const templateWrapper = (props) => {
 
-  const {text, count} = props;
+  const {children, count} = props;
 
   const tmpl = `<section>
     <p class="text-center">
-      <span data-news-feed-text>${text}</span>
+      <div data-async-app-feed>${children}</div>
       <span data-news-feed-count><strong>${count}</strong></span>
     </p>
     <br />
@@ -22,10 +22,18 @@ const templateWrapper = (props) => {
   return tmpl;
 }
 
-// const templateUpdate = (props) => {
-//  const {selector, state} = props;
-//  selector.innerHTML = state;
-// }
+const templateList = (props) => {
+  const {items} = props;
+  const itemsList = items.map(function(item) {
+    return `<li id="${'item-' + item.id}">${item.author}</li>`;
+  });
+  return `<ul>${itemsList.join('')}</ul>`;
+}
+
+const templateUpdate = (props) => {
+  const {selector, state} = props;
+  selector.innerHTML = state;
+}
 
 export class AsyncApp {
   constructor(props) {
@@ -38,58 +46,22 @@ export class AsyncApp {
 
   render() {
 
-    console.log('AsyncApp', this);
-
-    // console.log('AsyncApp 2', selectedSubreddit);
-
     const {store} = this.props;
-    const {dispatch} = store;
-    const {selectedSubreddit} = store.getState();
 
-    console.log('AsyncApp store', selectedSubreddit);
-
-    dispatch(fetchPostsIfNeeded(selectedSubreddit, store))
-
-    console.log('AsyncApp 3333 store', store.getState())
-
-    //const { selectedSubreddit } = this.props.store.getState();
-    //const { dispatch } = this.props.store;
-
-    //dispatch(fetchPostsIfNeeded(selectedSubreddit))
-    //console.log('AsyncApp selectedSubreddit', selectedSubreddit);
-
-    //defaultEvents(store, "NEWS_INCREMENT");
-    // defaultEvents(store, "NEWS_DECREMENT");
+    store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store))
 
     const element = new newElement('section',{class: 'async_app', id: 'AsyncAppWrapper'});
-    element.innerHTML = _.join(['', templateWrapper({text: 'text loreniusdasdm ipsum...', count: '8'})], ' ');
+    element.innerHTML = _.join(['', templateWrapper({children: 'Loading...', count: '8'})], ' ');
 
-    //
-
-    store.subscribe(() =>
-      //render,
-      // console.log("Ddddddddddddd========rootReducer subscribe mount:", store.getState())
-      console.log("Ddddddddddddd========rootReducer subscribe mount:", store.getState().postsBySubreddit)
+    store.subscribe(() => {
+        const {didInvalidate, isFetching, items} = store.getState().postsBySubreddit.reactjs;
+        if (isFetching) {
+          templateUpdate({selector: element.querySelector('[data-async-app-feed]'), state: 'Loading...'})
+        } else if (items[0] && isFetching == false) {
+          templateUpdate({selector: element.querySelector('[data-async-app-feed]'), state: templateList({items: items})})
+        }
+      }
     )
-
-    //newsElement.onclick = function(event) {
-    //  console.log('AsyncApp 3333 store', store.getState())
-    //}
-
-    //newsElement.onclick = function(event) {
-      //if (event.target.hasAttribute('data-news-feed-next')) {
-      //  defaultEvents(store, "NEWS_INCREMENT");
-      //  newsTemplateUpdate({selector: this.querySelector('[data-news-feed-count]'), state: store.getState().news});
-      //};
-      //if (event.target.hasAttribute('data-news-feed-prev')) {
-      //  defaultEvents(store, "NEWS_DECREMENT");
-      //  newsTemplateUpdate({selector: this.querySelector('[data-news-feed-count]'), state: store.getState().news});
-      //};
-      //if (event.target.hasAttribute('data-news-feed-update')) {
-      //  // defaultEvents(store, "NEWS_DECREMENT");
-      //  newsTemplateUpdate({selector: this.querySelector('[data-news-feed-text]'), state: 'New text lorem ipsum...' + store.getState().news});
-      //};
-    //}
 
     return element;
 
