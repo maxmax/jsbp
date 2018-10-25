@@ -1,0 +1,73 @@
+// Navigation
+// Global Navigation
+
+@mixin navigation-dev() {
+  border: 1px solid green;
+  &__menu {
+    border: 1px solid blue;
+    &__item {
+      border: 1px solid red;
+      &__link {
+        border: 1px solid blue;
+      }
+      &_dropdown {
+        border: 1px solid black;
+      }
+    }
+  }
+}
+
+@mixin navigation($navigation-background: #ссс) {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  // overflow: hidden;
+  background-color: $navigation-background;
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  &__menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    &__item {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      float: left;
+      &_right {
+        float: right;
+      }
+      &_active {
+        opacity: .6;
+      }
+      &__link {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      &_dropdown {
+        // border: 2px solid black;
+      }
+    }
+  }
+}
+
+@mixin navigation-vertical() {
+  .navigation__menu__item {
+    float: none;
+    clear: both;
+  }
+}
+
+.navigation {
+  @include navigation($navigation-background);
+  // @include navigation-dev();
+  &_vertical {
+    @include navigation-vertical()
+  }
+}

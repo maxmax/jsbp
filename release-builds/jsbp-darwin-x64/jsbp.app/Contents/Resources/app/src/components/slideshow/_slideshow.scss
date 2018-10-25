@@ -1,0 +1,45 @@
+// Slideshow
+
+@mixin slideshow($background: #fff, $col-gap: 20px) {
+  position: relative;
+  &__item {
+    position: relative;
+    &:not(:first-child) {
+      display: none;
+    }
+    &__img {
+      display: block;
+      max-width: 100%;
+    }
+    &__caption {
+      position: absolute;
+      top: $col-gap;
+      left: $col-gap;
+      padding: $col-gap $col-gap + $col-gap;
+      background: #fff;
+      width: 300px;
+    }
+  }
+  &__prev, &__next {
+    position: absolute;
+    top: 50%;
+    left: -2px;
+    z-index: 2;
+    color: #fff;
+    background-color: #000;
+    padding: 12px;
+    margin: 0px;
+    border: 0px;
+    outline: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  &__next {
+    left: auto;
+    right: -2px;
+  }
+}
+
+.slideshow {
+  @include slideshow($white, $col-gap);
+}

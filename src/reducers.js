@@ -1,18 +1,29 @@
-import {combineReducers, createStore} from "redux";
+import {combineReducers, createStore, compose, applyMiddleware} from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 import {counter} from './containers/Counter/reducer';
 import {news} from './containers/News/reducer';
-// import {masthead} from './containers/masthead/reducer';
+import {postsBySubreddit, selectedSubreddit} from './containers/AsyncApp/reducer';
 
 // Use ES6 object literal shorthand syntax to define the object shape
 const rootReducer = combineReducers({
     counter,
     news,
+    postsBySubreddit,
+    selectedSubreddit,
 });
 
-export const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+// here is our redux-store
+export const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
+  applyMiddleware(thunk)
+));
+
+// export const store = createStore(
+//  rootReducer,
+//  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+//)
 
 store.subscribe(() =>
   //render,

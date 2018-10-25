@@ -1,0 +1,75 @@
+// Navigation
+// Global Navigation
+
+@mixin divider-styled($divider: #e9ecef) {
+  height: 0;
+  margin: .5rem 0;
+  overflow: hidden;
+  border-top: 1px solid $divider;
+}
+
+@mixin dropdown($background: #fff, $color: #212529, $border-size: 1px, $border: rgba(0,0,0,.15), $border-radius: 0px, $divider: #e9ecef) {
+  position: relative;
+  &__item {
+    &::after {
+      content: "▽";
+      display: inline-block;
+      padding-left: 5px;
+      font-family: Tahoma;
+      font-size: 8px;
+      transition: all 0.2s ease-in-out;
+    }
+    // &:hover {
+    // }
+  }
+  &__menu {
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: $color;
+    text-align: left;
+    list-style: none;
+    background-color: $background;
+    background-clip: padding-box;
+    border: $border-size solid $border;
+    border-radius: $border-radius;
+    z-index: 1000;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    &__item {
+      display: block;
+      width: 100%;
+      padding: .25rem 1.5rem;
+      clear: both;
+      font-weight: 400;
+      color: $color;
+      text-align: inherit;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0;
+      text-decoration: none;
+    }
+    &__divider {
+      @include divider-styled($divider);
+    }
+  }
+  &_show {
+    .dropdown__item {
+      &::after {
+        content: "△";
+        transition: all 0.2s ease-in-out;
+      }
+    }
+    .dropdown__menu {
+      display: block;
+    }
+  }
+}
+
+.dropdown {
+  @include dropdown();
+}
