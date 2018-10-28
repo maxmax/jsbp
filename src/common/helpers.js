@@ -66,3 +66,14 @@ $.prototype = {
     return this;
   }
 };
+
+// Selector Update
+// selectorUpdate({
+//	selector: element.querySelector('[data-async-app-feed]'),
+//	state: list.render() // <div>child</div>
+// })
+
+export const selectorUpdate = (props) => {
+  const {selector, state} = props;
+  selector.innerHTML = state;
+}

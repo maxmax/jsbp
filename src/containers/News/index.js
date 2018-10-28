@@ -3,7 +3,7 @@ import {newElement} from '../../common/helpers';
 import {defaultEvents} from './actions';
 
 const newsTemplate = (props) => {
-
+  
   const {text, count} = props;
 
   const tmpl = `<section>
@@ -47,8 +47,6 @@ export class NewsFeed {
 
   render() {
 
-    console.log('NewsFeed Mount', this);
-
     const {store} = this.props;
 
     defaultEvents(store, "NEWS_INCREMENT");
@@ -73,7 +71,6 @@ export class NewsFeed {
     }
 
     return newsElement;
-
   }
 
 }

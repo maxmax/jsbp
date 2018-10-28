@@ -13,24 +13,18 @@ export class App {
       news: new NewsFeed({store: props.store}),
       counter: new Counter({store: props.store}),
       asyncapp: new AsyncApp({store: props.store}),
-      //asyncapp: new Counter({store: props.store}),
     };
   }
 
   render() {
     const {appWrapper, news, counter, asyncapp} = this.state;
-
+    // Containers
     // News
-    // console.log('App - News', news.render());
     appendElement(news.render(), appWrapper);
-    // news.after()
-
     // Counter
     appendElement(counter.render(), appWrapper);
-
     // AsyncApp
     appendElement(asyncapp.render(), appWrapper);
-
   }
 
 }

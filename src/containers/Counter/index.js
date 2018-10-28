@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {newElement} from '../../common/helpers';
+import {newElement, selectorUpdate} from '../../common/helpers';
 import {defaultEvents} from './actions';
 
 const templateWrapper = (props) => {
@@ -19,11 +19,6 @@ const templateWrapper = (props) => {
   return tmpl;
 }
 
-const templateUpdate = (props) => {
-  const {selector, state} = props;
-  selector.innerHTML = state;
-}
-
 export class Counter {
   constructor(props) {
     // super(props);
@@ -32,9 +27,6 @@ export class Counter {
   }
 
   render() {
-
-    console.log('Count Mount', this);
-
     const {store} = this.props;
 
     defaultEvents(store, "COUNT_INCREMENT");
@@ -45,16 +37,15 @@ export class Counter {
     countElement.onclick = function(event) {
       if (event.target.hasAttribute('data-count-plus')) {
         defaultEvents(store, "COUNT_INCREMENT");
-        templateUpdate({selector: this.querySelector('[data-count-value]'), state: store.getState().counter});
+        selectorUpdate({selector: this.querySelector('[data-count-value]'), state: store.getState().counter});
       };
       if (event.target.hasAttribute('data-count-minus')) {
         defaultEvents(store, "COUNT_DECREMENT");
-        templateUpdate({selector: this.querySelector('[data-count-value]'), state: store.getState().counter});
+        selectorUpdate({selector: this.querySelector('[data-count-value]'), state: store.getState().counter});
       };
     }
 
     return countElement;
-
   }
 
 }

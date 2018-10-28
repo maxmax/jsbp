@@ -1,5 +1,5 @@
 import {combineReducers, createStore, compose, applyMiddleware} from "redux";
-import { composeWithDevTools } from 'redux-devtools-extension';
+// import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import {counter} from './containers/Counter/reducer';
 import {news} from './containers/News/reducer';

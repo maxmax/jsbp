@@ -1,120 +1,26 @@
 import _ from 'lodash';
-import {newElement} from '../../common/helpers';
+import {newElement, selectorUpdate} from '../../common/helpers';
+import {Component} from '../../common/component';
 import { loading } from '../../components/loading/index';
-// import {defaultEvents} from './actions';
+import { Wrapper } from './components/Wrapper';
+import { List } from './components/List';
+
 import {
   selectSubreddit,
   fetchPostsIfNeeded,
   invalidateSubreddit
 } from './actions'
 
-const templateWrapper = (props) => {
-
-  const {children, count} = props;
-
-  const tmpl = `<section>
-    <div class="text-center">
-      <div data-async-app-feed>${children}</div>
-    </div>
-    <br />
-  </section>`;
-
-  return tmpl;
-}
-
-const templateList = (props) => {
-  const {items} = props;
-  const itemsList = items.map(function(item) {
-    return `<li id="${'item-' + item.id}">${item.author} <strong>${item.subreddit}</strong></li>`;
-  });
-  //
-  //for (let [key, value] of map) {
-  // console.log(key+" - "+value);
-  //}
-  //
-  const option = `
-    <br />
-    <br />
-    <button data-async-app-feed-update>Update</button>
-    <button data-async-app-feed-select="reactjs">Select React</button>
-    <button data-async-app-feed-select="vue">Select Vue</button>
-    <br />
-  `;
-  return `${option}<ul>${itemsList.join('')}</ul>`;
-}
-
-const templateUpdate = (props) => {
-  const {selector, state} = props;
-  selector.innerHTML = state;
-}
-
-const componentDidMount = (store) => {
-  store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store))
-}
-
-const componentUpdate = (store, element, state) => {
-  store.subscribe(() => {
-      const selectedstore = `store.getState().postsBySubreddit.${state.selected};`
-      const stateselect = eval(selectedstore);
-      if (stateselect && stateselect.isFetching) {
-        templateUpdate({
-          selector: element.querySelector('[data-async-app-feed]'),
-          state: loading()
-        })
-      } else if (stateselect && stateselect.items[0] && stateselect.isFetching == false) {
-        templateUpdate({
-          selector: element.querySelector('[data-async-app-feed]'),
-          state: templateList({items: stateselect.items})
-        })
-      }
-    }
-  )
-}
-
-// to helpers or lib
-
-//class Component {
-//  constructor(element) {
-//    this.element = element;
-//  }
-//  speak() {
-//    console.log(this.element + ' makes a noise.');
-//  }
-//}
-
-//export class AsyncApp extends Component {
-export class AsyncApp {
+export class AsyncApp extends Component {
   constructor(props) {
-    // super(props);
-    this.props = props;
+    super(props);
+    //this.props = props;
     this.element = new newElement('section',{class: 'async_app', id: 'AsyncAppWrapper'});
-    this.innerElement = _.join(['', templateWrapper({children: loading()})], ' ');
+    this.wrapper = new Wrapper({children: loading()});
+    this.innerElement = _.join(['', this.wrapper.render()], ' ');
     this.state = {
-      selected: 'reactjs'
+      selected: 'reactjs',
     };
-  }
-
-  handleUpdates(element, store, state) {
-
-    element.onclick = function(event) {
-      if (event.target.hasAttribute('data-async-app-feed-update')) {
-        store.dispatch(invalidateSubreddit(store.getState().selectedSubreddit, store.getState()));
-        store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
-      }
-      if (event.target.hasAttribute('data-async-app-feed-select')) {
-        state.selected = event.target.getAttribute('data-async-app-feed-select');
-        store.dispatch(selectSubreddit(state.selected, store.getState()));
-        store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
-      }
-    }
-
-    document.onclick = function(event) {
-      if (event.target.hasAttribute('data-async-app-feed-update-html')) {
-        store.dispatch(invalidateSubreddit(store.getState().selectedSubreddit, store.getState()));
-        store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
-      }
-    }
-
   }
 
   render() {
@@ -130,12 +36,61 @@ export class AsyncApp {
     componentUpdate(store, element, state);
 
     // Events
-    this.handleUpdates(element, store, state);
+    handleUpdates(element, store, state);
 
-    //return template
     element.innerHTML = innerElement;
     return element;
-
   }
 
+}
+
+// component Mount
+const componentDidMount = (store) => {
+  store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store))
+}
+
+// store subscribe - state Updated
+const componentUpdate = (store, element, state) => {
+  store.subscribe(() => {
+      const selectedstore = `store.getState().postsBySubreddit.${state.selected};`
+      const stateselect = eval(selectedstore);
+      if (stateselect && stateselect.isFetching) {
+        selectorUpdate({
+          selector: element.querySelector('[data-async-app-feed]'),
+          state: loading()
+        })
+      } else if (stateselect && stateselect.items[0] && stateselect.isFetching == false) {
+        const list = new List({items: stateselect.items, title: state.selected});
+        selectorUpdate({
+          selector: element.querySelector('[data-async-app-feed]'),
+          state: list.render()
+        })
+      }
+    }
+  )
+}
+
+// handle Updates
+const handleUpdates = (element, store, state) => {
+
+  // This element events
+  element.onclick = function(event) {
+    if (event.target.hasAttribute('data-async-app-feed-update')) {
+      store.dispatch(invalidateSubreddit(store.getState().selectedSubreddit, store.getState()));
+      store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
+    }
+    if (event.target.hasAttribute('data-async-app-feed-select')) {
+      state.selected = event.target.getAttribute('data-async-app-feed-select');
+      store.dispatch(selectSubreddit(state.selected, store.getState()));
+      store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
+    }
+  }
+
+  // html template button
+  document.onclick = function(event) {
+    if (event.target.hasAttribute('data-async-app-feed-update-html')) {
+      store.dispatch(invalidateSubreddit(store.getState().selectedSubreddit, store.getState()));
+      store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
+    }
+  }
 }
