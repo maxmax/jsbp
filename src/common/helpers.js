@@ -1,7 +1,7 @@
 import {documentApp} from '../services/globalService';
 // Helprers
 
-const APP = documentApp || document;
+const APP = documentApp || global.document;
 // New element
 
 function attr(el, at, value){
@@ -47,7 +47,7 @@ const $ = function(selector) {
     return new $(selector);
   }
   if(typeof selector == "string") {
-    this.init = document.getElementById(selector);
+    this.init = global.document.getElementById(selector);
   }
 };
 

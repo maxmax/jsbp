@@ -1,4 +1,4 @@
-// Slideshow
+import PropTypes from 'prop-types';
 
 const showContainer = (props) => {
   const {items, slide} = props;
@@ -48,17 +48,21 @@ const slideshowElements = (element) => {
   }
 }
 
-export class Slideshow {
+class Slideshow {
   constructor(props) {
+    this.props = props;
     // super(props);
-    this.state = {
-      element: props.element || null,
-    };
   }
 
   initSlideshow() {
-    const {element} = this.state;
+    const {element} = this.props;
     slideshowElements(element);
   }
 
 }
+
+Slideshow.propTypes = {
+  element: PropTypes.string.isRequired,
+}
+
+export default Slideshow;

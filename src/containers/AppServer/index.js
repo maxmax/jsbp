@@ -1,6 +1,6 @@
-//import {appendElement} from '../../common/helpers';
-//import {NewsFeed} from '../News/index';
-//import {Counter} from '../Counter/index';
+// import {appendElement} from '../../common/helpers';
+// import {NewsFeed} from '../News/index';
+// import {Counter} from '../Counter/index';
 import {AsyncApp} from '../AsyncApp/index';
 
 //export function appendElement(el, where){
@@ -8,7 +8,7 @@ import {AsyncApp} from '../AsyncApp/index';
 //  // where.appendChild(el);
 //}
 
-class App {
+class AppServer {
   constructor(props) {
     // super(store);
     this.props = props;
@@ -22,6 +22,8 @@ class App {
   }
 
   render() {
+
+    const {asyncapp} = this.state;
     //const {appWrapper, news, counter, asyncapp} = this.state;
     // Containers
     // News
@@ -30,11 +32,17 @@ class App {
     //appendElement(counter.render(), appWrapper);
     // AsyncApp
     //appendElement(asyncapp.render(), appWrapper);
-    const {asyncapp} = this.state;
-    asyncapp.mount();
-    return asyncapp.render();
+
+    console.log('class AppServer!!!!', this.props);
+
+    //asyncapp.mount();
+    //return asyncapp.render();
+
+    //console.log('class AppServer!!!!', this.props);
+    const returndev = '<div>Ddddddddddddddd</div>';
+    return returndev;
   }
 
 }
 
-export default App;
+export default AppServer;

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export class Wrapper {
   constructor(props) {
     this.props = props;
@@ -14,4 +16,8 @@ export class Wrapper {
     return template;
   }
 
+}
+
+Wrapper.propTypes = {
+  children: PropTypes.object,
 }

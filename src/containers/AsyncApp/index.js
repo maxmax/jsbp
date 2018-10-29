@@ -15,7 +15,8 @@ export class AsyncApp extends Component {
   constructor(props) {
     super(props);
     //this.props = props;
-    this.element = new newElement('section',{class: 'async_app', id: 'AsyncAppWrapper'});
+    //this.element = newElement('section',{class: 'async_app', id: 'AsyncAppWrapper'});
+    this.element = global.document.createElement('div');
     this.wrapper = new Wrapper({children: loading()});
     this.innerElement = _.join(['', this.wrapper.render()], ' ');
     this.state = {
@@ -23,11 +24,9 @@ export class AsyncApp extends Component {
     };
   }
 
-  render() {
+  mount() {
     const {element, state, innerElement} = this;
     const {store} = this.props;
-
-    console.log('AsyncApp', this);
 
     // componentDidMount || AsyncApp Mount
     componentDidMount(store);
@@ -37,6 +36,24 @@ export class AsyncApp extends Component {
 
     // Events
     handleUpdates(element, store, state);
+
+    //return console.log('AsyncApp Mount!', this.props);
+  }
+
+  render() {
+    const {element, state, innerElement} = this;
+    const {store} = this.props;
+
+    console.log('AsyncApp', this);
+
+    // componentDidMount || AsyncApp Mount
+    //componentDidMount(store);
+
+    // componentDidUpdate || store.subscribe
+    //componentUpdate(store, element, state);
+
+    // Events
+    //handleUpdates(element, store, state);
 
     element.innerHTML = innerElement;
     return element;

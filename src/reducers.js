@@ -13,17 +13,12 @@ const rootReducer = combineReducers({
     selectedSubreddit,
 });
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = typeof window != 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // here is our redux-store
 export const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
   applyMiddleware(thunk)
 ));
-
-// export const store = createStore(
-//  rootReducer,
-//  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-//)
 
 store.subscribe(() =>
   //render,

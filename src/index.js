@@ -1,16 +1,15 @@
 // import _ from 'lodash';
 import {store} from './reducers';
-import { App } from './containers/App/index';
+import App from './containers/App/index';
 import {defaultService} from './services/defaultService.js';
-// import {counterInt} from './containers/counter/index';
-// import {appendElement} from './common/helpers';
+import {appendElement} from './common/helpers';
 
 import './style/index.scss';
 
 // initial app
-// appendElement(counterInt(), app);
-let app = new App({store: store});
-app.render()
+const appWrapper = document.getElementById('main');
+const appmain = new App({store: store});
+appendElement(appmain.render(), appWrapper);
 
 // initial by default
 defaultService();

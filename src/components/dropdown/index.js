@@ -1,4 +1,4 @@
-// Dropdown
+import PropTypes from 'prop-types';
 
 const dropdownElement = (element, button, closest, active) => {
   element.onclick = function(event) {
@@ -16,19 +16,30 @@ const dropdownElements = (element, button, closest, active) => {
   }
 }
 
-export class Dropdown {
+class Dropdown {
   constructor(props) {
-    this.state = {
-      element: props.element || null,
-      button: props.button || 'data-dropdown-btn',
-      closest: props.closest || '[data-dropdown]',
-      active: props.active || 'dropdown_show',
-    };
+    this.props = props;
   }
 
-  initDropdown() {
-    const {element, button, closest, active} = this.state;
+  init() {
+    const {element, button, closest, active} = this.props;
     dropdownElements(element, button, closest, active)
   }
-
 }
+
+Dropdown.propTypes = {
+  element: PropTypes.string.isRequired,
+  button: PropTypes.string.isRequired,
+  closest: PropTypes.string,
+  active: PropTypes.string,
+}
+
+// Specifies the default values for props:
+//Dropdown.defaultProps = {
+//  element: 'body',
+//  button: 'data-dropdown-btn',
+//  closest: '[data-dropdown]',
+//  active: 'dropdown_show',
+//}
+
+export default Dropdown;

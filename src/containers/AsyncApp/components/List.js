@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export class List {
   constructor(props) {
     this.props = props;
@@ -22,4 +24,9 @@ export class List {
     return `${taxTitle}${option}<ul>${itemsList.join('')}</ul>`;
   }
 
+}
+
+List.propTypes = {
+  items: PropTypes.array,
+  title: PropTypes.string,
 }
