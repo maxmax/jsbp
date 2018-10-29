@@ -18,6 +18,7 @@ export class List {
       <button data-async-app-feed-update>Update</button>
       <button data-async-app-feed-select="reactjs">Select React</button>
       <button data-async-app-feed-select="vue">Select Vue</button>
+      <button data-async-app-feed-select="angular">Select Angular</button>
       <br />
     `;
 

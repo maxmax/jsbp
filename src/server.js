@@ -1,19 +1,30 @@
-import express  from 'express';
+import http from 'http';
 import {store} from 'reducers';
 import AppServer from 'containers/AppServer';
 
-const sr = express();
+http.createServer(function (req, res) {
+  var html = buildHtml(req);
 
-sr.use((req, res) => {
-  //console.log('AppServer!');
+  res.writeHead(200, {
+    'Content-Type': 'text/html',
+    'Content-Length': html.length,
+    'Expires': new Date().toUTCString()
+  });
+  res.end(html);
+}).listen(3003);
+
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8080' : '/';
+
+function buildHtml(req) {
+
   const testapp = new AppServer({store: store});
   const componentHTML = testapp.render();
-  return res.end(renderHTML(componentHTML));
-});
+  // console.log('componentHTML!', componentHTML);
+  // return res.end(renderHTML(componentHTML));
 
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8050' : '/';
+  var header = '';
+  var body = componentHTML;
 
-function renderHTML(componentHTML) {
   return `
     <!DOCTYPE html>
       <html>
@@ -21,18 +32,27 @@ function renderHTML(componentHTML) {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Hello</title>
-          <link rel="stylesheet" href="${assetUrl}/public/assets/styles.css">
+          <link rel="stylesheet" href="${assetUrl}/main.css">
+          ${header}
       </head>
       <body>
-        <div id="server-view">${componentHTML}</div>
-        <script type="application/javascript" src="${assetUrl}/public/assets/bundle.js"></script>
+        <section class="container">
+          <br />
+          <br />
+          <div id="main">${body}</div>
+        </div>
+        <br>
+        <button data-async-app-feed-update-html>HTML Update</button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <script type="application/javascript" src="${assetUrl}/main.bundle.js"></script>
+        <script>
+          console.log('renderHTML componentHTML Buuuump!', window);
+        </script>
       </body>
     </html>
   `;
-}
 
-const PORT = process.env.PORT || 3001;
-
-sr.listen(PORT, () => {
-  console.log(`Server listening on: ${PORT}`);
-});
+};
