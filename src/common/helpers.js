@@ -42,6 +42,7 @@ export function getEl(id) {
 }
 
 // Fluent interface | $('div').text('div').css({color: "red"});
+
 const $ = function(selector) {
   if(this.$) {
     return new $(selector);
@@ -68,12 +69,8 @@ $.prototype = {
 };
 
 // Selector Update
-// selectorUpdate({
-//	selector: element.querySelector('[data-async-app-feed]'),
-//	state: list.render() // <div>child</div>
-// })
 
 export const selectorUpdate = (props) => {
   const {selector, state} = props;
-  selector.innerHTML = state;
+  return selector.innerHTML = state;
 }

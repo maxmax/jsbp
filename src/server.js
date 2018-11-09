@@ -39,7 +39,7 @@ function buildHtml(req) {
         <section class="container">
           <br />
           <br />
-          <div id="main">${body}</div>
+          ${body}
         </div>
         <br>
         <button data-async-app-feed-update-html>HTML Update</button>
@@ -47,6 +47,7 @@ function buildHtml(req) {
         <br />
         <br />
         <br />
+        <!--JS-->
         <script type="application/javascript" src="${assetUrl}/main.bundle.js"></script>
         <script>
           console.log('renderHTML componentHTML Buuuump!', window);

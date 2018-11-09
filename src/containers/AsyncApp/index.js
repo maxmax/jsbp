@@ -15,40 +15,44 @@ export class AsyncApp extends Component {
   constructor(props) {
     super(props);
     //this.props = props;
+    this.store = this.props.store;
     this.element = newElement('section',{class: 'async_app', id: 'AsyncAppWrapper'});
+    //this.getElement = document.querySelector('#AsyncAppWrapper'),
     this.wrapper = new Wrapper({children: loading()});
-    this.innerElement = _.join(['', this.wrapper.render()], ' ');
+    this.wrapperElement = _.join(['', this.wrapper.render()], ' ');
     this.state = {
       selected: 'reactjs',
     };
+
+    //this.componentMount = this.componentMount(this.props.store);
+    this.componentMount = didMount(this.store);
+    this.componentUpdate = didUpdate(this.store, document, this.state);
+    this.componentHandleUpdates = didHandleUpdates(document, this.store, this.state);
   }
 
+  //componentMount(store) {
+  //  console.log('AsyncApp Mount App!');
+  //  store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store));
+  //}
+
   render() {
-    const {element, state, innerElement} = this;
-    const {store} = this.props;
-
-    console.log('AsyncApp', this);
-
-    componentMount(store);
-
-    componentUpdate(store, element, state);
-
-    handleUpdates(element, store, state);
-
-    element.innerHTML = innerElement;
+    const {element, wrapperElement} = this;
+    element.innerHTML = wrapperElement;
     return element;
   }
 
 }
 
-const componentMount = (store) => {
-  store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store))
+const didMount = (store) => {
+  console.log('Mount App!');
+  store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store));
 }
 
-const componentUpdate = (store, element, state) => {
+const didUpdate = (store, element, state) => {
   store.subscribe(() => {
       const selectedstore = `store.getState().postsBySubreddit.${state.selected};`
       const stateselect = eval(selectedstore);
+      
       if (stateselect && stateselect.isFetching) {
         selectorUpdate({
           selector: element.querySelector('[data-async-app-feed]'),
@@ -65,8 +69,7 @@ const componentUpdate = (store, element, state) => {
   )
 }
 
-const handleUpdates = (element, store, state) => {
-
+const didHandleUpdates = (element, store, state) => {
   element.onclick = function(event) {
     if (event.target.hasAttribute('data-async-app-feed-update')) {
       store.dispatch(invalidateSubreddit(store.getState().selectedSubreddit, store.getState()));
@@ -77,9 +80,6 @@ const handleUpdates = (element, store, state) => {
       store.dispatch(selectSubreddit(state.selected, store.getState()));
       store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
     }
-  }
-
-  document.onclick = function(event) {
     if (event.target.hasAttribute('data-async-app-feed-update-html')) {
       store.dispatch(invalidateSubreddit(store.getState().selectedSubreddit, store.getState()));
       store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store.getState()));
