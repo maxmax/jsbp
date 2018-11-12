@@ -24,16 +24,23 @@ export class AsyncApp extends Component {
       selected: 'reactjs',
     };
 
-    //this.componentMount = this.componentMount(this.props.store);
-    this.componentMount = didMount(this.store);
-    this.componentUpdate = didUpdate(this.store, document, this.state);
-    this.componentHandleUpdates = didHandleUpdates(document, this.store, this.state);
+    this.componentMount();
+    this.componentUpdate();
+    this.componentHandleUpdates();
   }
 
-  //componentMount(store) {
-  //  console.log('AsyncApp Mount App!');
-  //  store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store));
-  //}
+  componentMount() {
+    console.log('AsyncApp Mount App!');
+    this.store.dispatch(fetchPostsIfNeeded(this.store.getState().selectedSubreddit, this.store));
+  }
+
+  componentUpdate() {
+    subscribeUpdate(document, this.store, this.state);
+  }
+
+  componentHandleUpdates() {
+    didHandleUpdates(document, this.store, this.state);
+  }
 
   render() {
     const {element, wrapperElement} = this;
@@ -43,16 +50,11 @@ export class AsyncApp extends Component {
 
 }
 
-const didMount = (store) => {
-  console.log('Mount App!');
-  store.dispatch(fetchPostsIfNeeded(store.getState().selectedSubreddit, store));
-}
-
-const didUpdate = (store, element, state) => {
+const subscribeUpdate = (element, store, state) => {
   store.subscribe(() => {
       const selectedstore = `store.getState().postsBySubreddit.${state.selected};`
       const stateselect = eval(selectedstore);
-      
+
       if (stateselect && stateselect.isFetching) {
         selectorUpdate({
           selector: element.querySelector('[data-async-app-feed]'),

@@ -1,7 +1,8 @@
 import {documentApp} from '../services/globalService';
-// Helprers
 
-const APP = documentApp || global.document;
+// const APP = documentApp || global.document;
+const APP = documentApp;
+
 // New element
 
 function attr(el, at, value){
@@ -68,9 +69,48 @@ $.prototype = {
   }
 };
 
-// Selector Update
+/**
+ * Returns changed content from a HTML string by selector
+ *
+ * @param {html} String The html string
+ * selectorUpdate({
+ *   selector: document.querySelector('[data-app-feed]'),
+ *   state: '<div>innerHTML</div>'
+ * })
+ */
 
 export const selectorUpdate = (props) => {
   const {selector, state} = props;
   return selector.innerHTML = state;
+}
+
+/**
+ * Returns the text from a HTML string
+ *
+ * @param {html} String The html string
+ * const htmlString= "<div><h1>Hello World</h1>\n<p>It's me</p></div>";
+ * console.log('stripHtml====================stripHtml', stripHtml(htmlString));
+ */
+
+export function stripHtml(html){
+  // Create a new div element
+  const temporalDivElement = document.createElement("div");
+  // Set the HTML content with the providen
+  temporalDivElement.innerHTML = html;
+  // Retrieve the text property of the element (cross-browser support)
+  return temporalDivElement.textContent || temporalDivElement.innerText || "";
+}
+
+/**
+ * Returns the obj from a HTML string
+ *
+ * @param {html} String The html string
+ * https://w3c.github.io/DOM-Parsing/
+ * ConvertHtmlToDom(bhtml).getElementsByTagName('ul')
+ */
+
+export const ConvertHtmlToDom = (html) => {
+  const parser = new DOMParser();
+  const result = parser.parseFromString(html, "text/html");
+  return result;
 }

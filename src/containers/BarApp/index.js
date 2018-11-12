@@ -6,7 +6,6 @@ import {Component} from '../../common/component';
 export class BarApp extends Component {
   constructor(props) {
     super(props);
-    //this.element = document.createElement('div');
     this.element = typeof document !== 'undefined' ? document.createElement('div') : null;
   }
 
