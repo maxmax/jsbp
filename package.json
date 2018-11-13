@@ -4,7 +4,7 @@
   "description": "JS Boilerplate / jsbp",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=production node server.js",
+    "start:prod": "NODE_ENV=production node server.js",
     "client-start": "npm-run-all --parallel dev:server lint:watch",
     "dev:server": "webpack-dev-server --open --config webpack.dev.js",
     "watch": "webpack -w -d",
@@ -42,7 +42,7 @@
     "express": "4.16.4",
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "0.11.2",
-    "gh-pages": "1.0.0",
+    "gh-pages": "2.0.1",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "2.30.1",
     "node-sass": "4.5.3",
@@ -52,8 +52,8 @@
     "style-loader": "0.18.2",
     "uglifyjs-webpack-plugin": "0.4.6",
     "webpack": "3.6.0",
-    "webpack-bundle-analyzer": "2.9.0",
-    "webpack-dev-server": "2.8.2",
+    "webpack-bundle-analyzer": "3.0.3",
+    "webpack-dev-server": "3.1.10",
     "webpack-merge": "4.1.0",
     "xml-loader": "1.2.1"
   },
