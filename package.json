@@ -2,9 +2,9 @@
   "name": "jsbp",
   "version": "0.1.0",
   "description": "JS Boilerplate / jsbp",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
-    "start": "npm-run-all --parallel dev:server lint:watch",
+    "client-start": "npm-run-all --parallel dev:server lint:watch",
     "dev:server": "webpack-dev-server --open --config webpack.dev.js",
     "watch": "webpack -w -d",
     "build": "webpack --config webpack.prod.js",
