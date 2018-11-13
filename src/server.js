@@ -3,6 +3,7 @@ import fs from 'fs';
 import {store} from 'reducers';
 import AppServer from 'containers/AppServer';
 import TopNavigation from 'components/navigation';
+import Slideshow from 'components/slideshow';
 
 http.createServer(function (req, res) {
   var html = buildHtml(req);
@@ -31,6 +32,17 @@ function buildHtml(req) {
   const testapp = new AppServer({store: store});
   const componentHTML = testapp.render();
 
+  const gallerydata = {
+    items: [
+      {src: 'https://picsum.photos/1200/400?image=1045', title: 'What is Lorem Ipsum?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
+      {src: 'https://picsum.photos/1200/400?image=1078', title: 'Why do we use it?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
+      {src: 'https://picsum.photos/1200/400?image=1018', title: 'Where does it come from?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
+      {src: 'https://picsum.photos/1200/400?image=951', title: 'Where does it come from?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
+    ]
+  }
+  const slideshowapp = new Slideshow(gallerydata);
+  const slideshowHTML = slideshowapp.render();
+
   const body = componentHTML;
   const domdev = '<section><div id="rootdom"></div><button id="reloaddom">reloaddom</button></section>';
 
@@ -55,6 +67,9 @@ function buildHtml(req) {
           <br />
           <br />
           ${domdev}
+          <br />
+          ${slideshowHTML}
+          <br />
           <br />
         </section>
         <br />

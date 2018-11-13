@@ -10,7 +10,6 @@
 
 class TopNavigation {
   constructor(props) {
-    // super(store);
     this.props = props;
   }
 
@@ -18,7 +17,6 @@ class TopNavigation {
     this.topnavigation = getTopNavigation(this.props.items)
     return this.topnavigation;
   }
-
 }
 
 const getTopNavigation = (items = []) => {

@@ -15,7 +15,7 @@ export function defaultService() {
 
   // Components
   // Dropdown on body
-  let dropdown = new Dropdown({
+  const dropdown = new Dropdown({
     element: 'body',
     button: 'data-dropdown-btn',
     closest: '[data-dropdown]',
@@ -25,7 +25,7 @@ export function defaultService() {
 
 
   // Slideshow on data-slideshow
-  let slideshow = new Slideshow({element: "[data-slideshow]"});
+  const slideshow = new Slideshow({element: "[data-slideshow]"});
   slideshow.initSlideshow();
 
 }

@@ -1,13 +1,73 @@
+// Gallery
+// Example
+// InitSlideshow by
+// Slideshow on data-slideshow by querySelectorAll
+// const slideshow = new Slideshow({element: "[data-slideshow]"});
+// slideshow.initSlideshow();
+// Render
+// const gallerydata = {
+//  items: [
+//    {src: 'https://picsum.photos/1200/400?image=1045', title: 'What is Lorem Ipsum?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
+//    {src: 'https://picsum.photos/1200/400?image=1078', title: 'Why do we use it?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
+//    {src: 'https://picsum.photos/1200/400?image=1018', title: 'Where does it come from?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'}
+//  ]
+// }
+// const slideshowapp = new Slideshow(gallerydata);
+// const slideshowHTML = slideshowapp.render();
+
 import PropTypes from 'prop-types';
 
-const showContainer = (props) => {
-  const {items, slide} = props;
-  for (var i = 0; i < items.length; i++) {
-    items[i].style.display = "none";
+class Slideshow {
+  constructor(props) {
+    this.props = props;
   }
 
-  items[slide].style.display = "block";
+  initSlideshow() {
+    const {element} = this.props;
+    slideshowElements(element);
+  }
+
+  render() {
+    this.slideshow = getSlideshow(this.props.items)
+    return this.slideshow;
+  }
+
 }
+
+// Sample render from props
+const getSlideshow = (items = []) => {
+
+  const itemsList = items.map(function(item) {
+    return `<div class="slideshow__item">
+      <img class="slideshow__item__img" src="${item.src}">
+      <div class="slideshow__item__caption">
+        <h2>${item.title}</h2>
+        <p>${item.text}</p>
+      </div>
+    </div>`;
+  });
+
+  const itemsWrapper = `
+    <section class="slideshow" data-slideshow>
+      ${itemsList.join('')}
+      <button class="slideshow__prev">&#10094;</button>
+      <button class="slideshow__next">&#10095;</button>
+    </section>
+  `;
+
+  return itemsWrapper;
+}
+
+// Int slideshow
+
+const slideshowElements = (element) => {
+  var elements = document.querySelectorAll(element);
+  for (var i = 0; i < elements.length; i++) {
+    slideshowElement(elements[i]);
+  }
+}
+
+// Current gallery
 
 const slideshowElement = (element) => {
 
@@ -38,27 +98,17 @@ const slideshowElement = (element) => {
     }
     showContainer({items: items, slide: slideIndex});
   }
-
 }
 
-const slideshowElements = (element) => {
-  var elements = document.querySelectorAll(element);
-  for (var i = 0; i < elements.length; i++) {
-    slideshowElement(elements[i]);
-  }
-}
+// showContainer
 
-class Slideshow {
-  constructor(props) {
-    this.props = props;
-    // super(props);
+const showContainer = (props) => {
+  const {items, slide} = props;
+  for (var i = 0; i < items.length; i++) {
+    items[i].style.display = "none";
   }
 
-  initSlideshow() {
-    const {element} = this.props;
-    slideshowElements(element);
-  }
-
+  items[slide].style.display = "block";
 }
 
 Slideshow.propTypes = {
