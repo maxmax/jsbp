@@ -17,7 +17,6 @@ http.createServer(function (req, res) {
 }).listen(3003);
 
 const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8080' : 'https://maxmax.github.io/jsbp/';
-// https://maxmax.github.io/jsbp/
 
 function buildHtml(req) {
 
