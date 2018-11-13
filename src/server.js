@@ -1,9 +1,9 @@
 import http from 'http';
 import fs from 'fs';
-import {store} from 'reducers';
-import AppServer from 'containers/AppServer';
-import TopNavigation from 'components/navigation';
-import Slideshow from 'components/slideshow';
+import {store} from './reducers';
+import AppServer from './containers/AppServer';
+import TopNavigation from './components/navigation';
+import Slideshow from './components/slideshow';
 
 http.createServer(function (req, res) {
   var html = buildHtml(req);
@@ -16,7 +16,7 @@ http.createServer(function (req, res) {
   res.end(html);
 }).listen(3003);
 
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8080' : '/';
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8080' : 'https://maxmax.github.io/jsbp/';
 // https://maxmax.github.io/jsbp/
 
 function buildHtml(req) {
