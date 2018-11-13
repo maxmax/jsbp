@@ -1,6 +1,8 @@
 import http from 'http';
+import fs from 'fs';
 import {store} from 'reducers';
 import AppServer from 'containers/AppServer';
+import TopNavigation from 'components/navigation';
 
 http.createServer(function (req, res) {
   var html = buildHtml(req);
@@ -17,13 +19,20 @@ const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8080'
 
 function buildHtml(req) {
 
+  const header = '';
+
+  const topnavigation = new TopNavigation({items: [
+    {name: 'Home', to: '/'},
+    {name: 'Item 2', to: '/'},
+    {name: 'Item 3', to: '/'}
+  ]});
+  const topnavigationHTML = topnavigation.render();
+
   const testapp = new AppServer({store: store});
   const componentHTML = testapp.render();
-  // console.log('componentHTML!', componentHTML);
-  // return res.end(renderHTML(componentHTML));
 
-  var header = '';
-  var body = componentHTML;
+  const body = componentHTML;
+  const domdev = '<section><div id="rootdom"></div><button id="reloaddom">reloaddom</button></section>';
 
   return `
     <!DOCTYPE html>
@@ -36,21 +45,25 @@ function buildHtml(req) {
           ${header}
       </head>
       <body>
+        ${topnavigationHTML}
         <section class="container">
           <br />
           <br />
           ${body}
-        </div>
-        <br>
-        <button data-async-app-feed-update-html>HTML Update</button>
-        <br />
+          <br />
+          <button data-async-app-feed-update-html>HTML Update</button>
+          <br />
+          <br />
+          ${domdev}
+          <br />
+        </section>
         <br />
         <br />
         <br />
         <!--JS-->
         <script type="application/javascript" src="${assetUrl}/main.bundle.js"></script>
         <script>
-          console.log('renderHTML componentHTML Buuuump!', window);
+          console.log('renderHTML componentHTML Buuump!', window);
         </script>
       </body>
     </html>

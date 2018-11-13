@@ -106,6 +106,7 @@ export function stripHtml(html){
  *
  * @param {html} String The html string
  * https://w3c.github.io/DOM-Parsing/
+ * "application/xml", "image/svg+xml", "text/html"
  * ConvertHtmlToDom(bhtml).getElementsByTagName('ul')
  */
 
