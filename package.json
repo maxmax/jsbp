@@ -20,6 +20,9 @@
     "type": "git",
     "url": "git://github.com/maxmax/jsbp.git"
   },
+  "engines": {
+    "node": "8.11.3"
+  },
   "author": "maxmax",
   "license": "MIT",
   "devDependencies": {
