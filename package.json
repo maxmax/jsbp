@@ -4,7 +4,7 @@
   "description": "JS Boilerplate / jsbp",
   "main": "server.js",
   "scripts": {
-    "start:prod": "NODE_ENV=production node server.js",
+    "start:prod": "cross-env NODE_ENV=production node server.js",
     "client-start": "npm-run-all --parallel dev:server lint:watch",
     "dev:server": "webpack-dev-server --open --config webpack.dev.js",
     "watch": "webpack -w -d",
@@ -60,10 +60,11 @@
   "dependencies": {
     "babel": "6.23.0",
     "babel-core": "6.26.0",
-    "babel-polyfill": "6.26.0",
     "babel-plugin-transform-async-to-generator": "6.24.1",
+    "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.6.0",
     "chalk": "2.4.1",
+    "cross-env": "5.2.0",
     "cross-fetch": "2.2.2",
     "etherscan-api": "8.0.4",
     "immutable": "3.8.2",
