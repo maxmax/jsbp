@@ -10,7 +10,7 @@ sr.use((req, res) => {
   return res.end(renderHTML(componentHTML));
 });
 
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8050' : '/';
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8050' : 'https://maxmax.github.io/jsbp/';
 
 function renderHTML(componentHTML) {
   return `
