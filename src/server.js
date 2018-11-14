@@ -53,12 +53,14 @@ function renderHTML(topnavigationHTML, slideshowHTML, componentHTML) {
         <br />
         <section class="container">
           ${componentHTML}
+          <br />
+          <button data-async-app-feed-update-html>HTML Update</button>
         </section>
         <br />
-        <button data-async-app-feed-update-html>HTML Update</button>
         <br />
-        <br />
-        <section><div id="rootdom"></div><button id="reloaddom">reloaddom</button></section>
+        <section class="container">
+          <div id="rootdom"></div><button id="reloaddom">reloaddom</button>
+        </section>
         <br />
         <br />
         <script type="application/javascript" src="${assetUrl}/main.bundle.js"></script>
