@@ -1,6 +1,6 @@
 import express  from 'express';
-import {store} from 'reducers';
-import AppServer from 'containers/AppServer';
+import {store} from './reducers';
+import AppServer from './containers/AppServer';
 
 const sr = express();
 
