@@ -1,26 +1,12 @@
-import http from 'http';
-import fs from 'fs';
+import express  from 'express';
 import {store} from './reducers';
-import AppServer from './containers/AppServer';
 import TopNavigation from './components/navigation';
 import Slideshow from './components/slideshow';
+import AppServer from './containers/AppServer';
 
-http.createServer(function (req, res) {
-  var html = buildHtml(req);
+const sr = express();
 
-  res.writeHead(200, {
-    'Content-Type': 'text/html',
-    'Content-Length': html.length,
-    'Expires': new Date().toUTCString()
-  });
-  res.end(html);
-}).listen(3003);
-
-const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8080' : 'https://maxmax.github.io/jsbp/';
-
-function buildHtml(req) {
-
-  const header = '';
+sr.use((req, res) => {
 
   const topnavigation = new TopNavigation({items: [
     {name: 'Home', to: '/'},
@@ -29,9 +15,7 @@ function buildHtml(req) {
   ]});
   const topnavigationHTML = topnavigation.render();
 
-  const testapp = new AppServer({store: store});
-  const componentHTML = testapp.render();
-
+  //
   const gallerydata = {
     items: [
       {src: 'https://picsum.photos/1200/400?image=1045', title: 'What is Lorem Ipsum?', text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
@@ -42,10 +26,17 @@ function buildHtml(req) {
   }
   const slideshowapp = new Slideshow(gallerydata);
   const slideshowHTML = slideshowapp.render();
+  //
 
-  const body = componentHTML;
-  const domdev = '<section><div id="rootdom"></div><button id="reloaddom">reloaddom</button></section>';
+  const appserver = new AppServer({store: store});
+  const componentHTML = appserver.render();
 
+  return res.end(renderHTML(topnavigationHTML, slideshowHTML, componentHTML));
+});
+
+const assetUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:8080' : 'https://maxmax.github.io/jsbp/';
+
+function renderHTML(topnavigationHTML, slideshowHTML, componentHTML) {
   return `
     <!DOCTYPE html>
       <html>
@@ -54,34 +45,33 @@ function buildHtml(req) {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Hello</title>
           <link rel="stylesheet" href="${assetUrl}/main.css">
-          ${header}
       </head>
       <body>
         ${topnavigationHTML}
+        ${slideshowHTML}
+        <br />
+        <br />
         <section class="container">
-          <br />
-          <br />
-          ${body}
-          <br />
-          <button data-async-app-feed-update-html>HTML Update</button>
-          <br />
-          <br />
-          ${domdev}
-          <br />
-          ${slideshowHTML}
-          <br />
-          <br />
+          ${componentHTML}
         </section>
         <br />
+        <button data-async-app-feed-update-html>HTML Update</button>
         <br />
         <br />
-        <!--JS-->
+        <section><div id="rootdom"></div><button id="reloaddom">reloaddom</button></section>
+        <br />
+        <br />
         <script type="application/javascript" src="${assetUrl}/main.bundle.js"></script>
         <script>
-          console.log('renderHTML componentHTML Buuump!', window);
+          console.log('Bump!', window);
         </script>
       </body>
     </html>
   `;
+}
 
-};
+const PORT = process.env.PORT || 3001;
+
+sr.listen(PORT, () => {
+  console.log(`Server listening on: ${PORT}`);
+});
